@@ -15,6 +15,9 @@ export class Tab2Page implements OnInit {
 
   ngOnInit(): void {
     this.scans$ = this.storageService.getDataFromStorage().pipe(pluck('scans'));
-    this.scans$.subscribe(console.log);
+  }
+
+  public sendEmail() {
+    console.log('enviando correo');
   }
 }

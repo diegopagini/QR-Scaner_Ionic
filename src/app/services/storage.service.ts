@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -10,7 +11,10 @@ import { keepInStorage } from '../store/actions/storage.actions';
 export class StorageService {
   public records: Record[] = [];
   // eslint-disable-next-line ngrx/no-typed-global-store
-  constructor(private store: Store<{ storage: any }>) {}
+  constructor(
+    private store: Store<{ storage: any }>,
+    private http: HttpClient
+  ) {}
 
   // NgRx
   public keepInStorage(payload: any) {

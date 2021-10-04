@@ -18,7 +18,7 @@ export class Record {
     switch (initialText) {
       case 'http':
         this.type = 'http';
-        this.icon = 'goble';
+        this.icon = 'globe';
         break;
 
       case 'geo:':

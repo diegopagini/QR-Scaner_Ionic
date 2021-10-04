@@ -33,6 +33,7 @@ export class Tab1Page {
           text: 'https://www.youtube.com/',
         };
         this.storageService.keepInStorage(barcodeData);
+        this.storageService.saveRecord(barcodeData.format, barcodeData.text);
       });
   }
 }
