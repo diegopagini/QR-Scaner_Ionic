@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-tab1',
@@ -12,16 +13,27 @@ export class Tab1Page {
     allowSlideNext: false,
   };
 
-  constructor(private barcodeScanner: BarcodeScanner) {}
+  constructor(
+    private barcodeScanner: BarcodeScanner,
+    private storageService: StorageService
+  ) {}
 
   public scan() {
     this.barcodeScanner
       .scan()
       .then((barcodeData) => {
-        console.log('Barcode data', barcodeData);
+        if (!barcodeData.cancelled) {
+          this.storageService.keepInStorage(barcodeData);
+          this.storageService.saveRecord(barcodeData.format, barcodeData.text);
+        }
       })
       .catch((err) => {
-        console.log('Error', err);
+        this.storageService.saveRecord('QRCode', 'https://www.youtube.com/');
+        const barcodeData = {
+          format: 'QRCode',
+          text: 'https://www.youtube.com/',
+        };
+        this.storageService.keepInStorage(barcodeData);
       });
   }
 }
