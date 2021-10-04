@@ -24,11 +24,10 @@ export class Tab1Page {
       .then((barcodeData) => {
         if (!barcodeData.cancelled) {
           this.storageService.keepInStorage(barcodeData);
-          this.storageService.saveRecord(barcodeData.format, barcodeData.text);
         }
       })
       .catch((err) => {
-        this.storageService.saveRecord('QRCode', 'https://www.youtube.com/');
+        // Only to test ngrx
         const barcodeData = {
           format: 'QRCode',
           text: 'https://www.youtube.com/',
