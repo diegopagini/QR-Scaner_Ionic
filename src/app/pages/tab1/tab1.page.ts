@@ -32,8 +32,8 @@ export class Tab1Page {
       .catch((err) => {
         // Only to test ngrx
         const barcodeData = {
-          format: 'QRCode',
-          text: 'https://www.youtube.com/',
+          format: 'geo',
+          text: 'geo:40.73151796986687,-74.06087294062502',
         };
         this.storageService.keepInStorage(barcodeData);
         this.storageService.saveRecord(barcodeData.format, barcodeData.text);
