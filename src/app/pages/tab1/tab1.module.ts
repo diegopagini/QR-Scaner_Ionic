@@ -5,9 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 
 import { Tab1PageRoutingModule } from './tab1-routing.module';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 @NgModule({
   imports: [IonicModule, CommonModule, FormsModule, Tab1PageRoutingModule],
   declarations: [Tab1Page],
 })
-export class Tab1PageModule {}
+export class Tab1PageModule {
+  constructor(private barcodeScanner: BarcodeScanner) {}
+}
