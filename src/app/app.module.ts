@@ -10,7 +10,8 @@ import { StoreModule } from '@ngrx/store';
 import { storageReducer } from './store/reducers/storage.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-import { HttpClientModule } from '@angular/common/http';
+import { IonicStorageModule } from '@ionic/storage-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,11 +25,12 @@ import { HttpClientModule } from '@angular/common/http';
       maxAge: 25,
       logOnly: environment.production,
     }),
-    HttpClientModule,
+    IonicStorageModule.forRoot(),
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     BarcodeScanner,
+    InAppBrowser,
   ],
   bootstrap: [AppComponent],
 })

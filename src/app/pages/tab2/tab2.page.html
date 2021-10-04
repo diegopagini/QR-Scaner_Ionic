@@ -9,14 +9,30 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-list *ngIf="scans$ |async as scans">
-    <ion-item *ngFor="let record of scans" detail>
-      <ion-icon color="primary" slot="start" [name]="record.icon"></ion-icon>
-      <ion-label>
-        <h2>{{record.text}}</h2>
-        <p>{{record.created | date: 'medium'}}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+<ion-content class="ion-padding" *ngIf="scans$ | async as scans">
+  <ng-container *ngIf="scans.length > 0; else noScans">
+    <ion-list>
+      <ion-item
+        (click)="openRecord(record)"
+        *ngFor="let record of scans"
+        detail
+      >
+        <ion-icon color="primary" slot="start" [name]="record.icon"></ion-icon>
+        <ion-label>
+          <h2>{{record.text}}</h2>
+          <p>{{record.created | date: 'medium'}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
 </ion-content>
+
+<ng-template #noScans>
+  <ion-content>
+    <ion-slides>
+      <ion-slide>
+        <h3>There are no records yet...</h3>
+      </ion-slide>
+    </ion-slides>
+  </ion-content>
+</ng-template>

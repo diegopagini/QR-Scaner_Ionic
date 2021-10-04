@@ -23,7 +23,10 @@ export class Tab1Page {
       .scan()
       .then((barcodeData) => {
         if (!barcodeData.cancelled) {
+          // ngrx
           this.storageService.keepInStorage(barcodeData);
+          // ionStorage
+          this.storageService.saveRecord(barcodeData.format, barcodeData.text);
         }
       })
       .catch((err) => {
