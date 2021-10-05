@@ -1,6 +1,6 @@
 {
-	"appId": "io.ionic.starter",
-	"appName": "qrScanner",
-	"webDir": "www",
-	"bundledWebRuntime": false
+  "appId": "appqr001",
+  "appName": "qrScanner",
+  "webDir": "www",
+  "bundledWebRuntime": false
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { File } from '@ionic-native/file/ngx';
 import { Record } from '../models/record.model';
 import { keepInStorage } from '../store/actions/storage.actions';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
@@ -13,13 +13,15 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 export class StorageService {
   public records: Record[] = [];
   private _storage: Storage | null = null;
+  private fileName: string = 'records.csv';
 
   // eslint-disable-next-line ngrx/no-typed-global-store
   constructor(
     private store: Store<{ storage: any }>,
     private storage: Storage,
     private navController: NavController,
-    private iab: InAppBrowser
+    private iab: InAppBrowser,
+    private file: File
   ) {
     this.init();
     this.loadStorage();
@@ -42,9 +44,13 @@ export class StorageService {
     this.openRecord(newRecord);
   }
 
-  public getDataFromStorage(): Observable<any> {
+  public async getDataFromStorage() {
     // eslint-disable-next-line ngrx/use-selector-in-select
-    return this.store.select('storage');
+    // return this.store.select('storage');
+
+    const record = await this.storage.get('records');
+    this.records = record || [];
+    return this.records;
   }
 
   private async loadStorage() {
@@ -70,5 +76,47 @@ export class StorageService {
       default:
         break;
     }
+  }
+
+  public sendEmail() {
+    const temp: any[] = [];
+    const titles: string = 'Type, Format, Created, Text\n';
+
+    temp.push(titles);
+    this.records.forEach((record) => {
+      const line = `${record.type}, ${record.format}, ${
+        record.created
+      }, ${record.text.replace(',', ' ')}\n`;
+
+      temp.push(line);
+      this.createFile(temp.join(''));
+    });
+  }
+
+  private createFile(text: string) {
+    this.file
+      .checkFile(this.file.dataDirectory, this.fileName)
+      .then((exists) => {
+        console.log(exists);
+        return this.writeInFile(text);
+      })
+      .catch((err) => {
+        return this.file
+          .createFile(this.file.dataDirectory, this.fileName, false)
+          .then((created) => {
+            this.writeInFile(text);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      });
+  }
+
+  private async writeInFile(text: string) {
+    await this.file.writeExistingFile(
+      this.file.dataDirectory,
+      this.fileName,
+      text
+    );
   }
 }

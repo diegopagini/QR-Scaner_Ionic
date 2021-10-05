@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" *ngIf="scans$ | async as scans">
+<ion-content class="ion-padding" *ngIf="scans">
   <ng-container *ngIf="scans.length > 0; else noScans">
     <ion-list>
       <ion-item

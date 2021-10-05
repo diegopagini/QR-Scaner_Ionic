@@ -9,17 +9,19 @@ import { pluck } from 'rxjs/operators';
   styleUrls: ['tab2.page.scss'],
 })
 export class Tab2Page implements OnInit {
-  public scans$: Observable<any>;
+  public scans: any;
 
   constructor(private storageService: StorageService) {}
 
   ngOnInit(): void {
-    this.scans$ = this.storageService.getDataFromStorage().pipe(pluck('scans'));
-    this.scans$.subscribe(console.log);
+    this.storageService
+      .getDataFromStorage()
+      .then((resp) => (this.scans = resp));
   }
 
   public sendEmail(): void {
     console.log('enviando correo');
+    this.storageService.sendEmail();
   }
 
   public openRecord(record): void {
