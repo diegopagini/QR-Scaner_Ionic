@@ -63,6 +63,10 @@ export class StorageService {
         this.iab.create(record.text, '_system');
         break;
 
+      case 'geo':
+        this.navController.navigateForward(`/tabs/tab2/map/${record.text}`);
+        break;
+
       default:
         break;
     }
