@@ -20,7 +20,6 @@ export class Tab2Page implements OnInit {
   }
 
   public sendEmail(): void {
-    console.log('enviando correo');
     this.storageService.sendEmail();
   }
 

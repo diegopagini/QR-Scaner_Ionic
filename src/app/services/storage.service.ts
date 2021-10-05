@@ -6,6 +6,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Record } from '../models/record.model';
 import { keepInStorage } from '../store/actions/storage.actions';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,8 @@ export class StorageService {
     private storage: Storage,
     private navController: NavController,
     private iab: InAppBrowser,
-    private file: File
+    private file: File,
+    private emailComposer: EmailComposer
   ) {
     this.init();
     this.loadStorage();
@@ -97,7 +99,6 @@ export class StorageService {
     this.file
       .checkFile(this.file.dataDirectory, this.fileName)
       .then((exists) => {
-        console.log(exists);
         return this.writeInFile(text);
       })
       .catch((err) => {
@@ -118,5 +119,19 @@ export class StorageService {
       this.fileName,
       text
     );
+
+    const file = `${this.file.dataDirectory}${this.fileName}`;
+    const email = {
+      to: '',
+      // cc: '',
+      // bcc: ['', ''],
+      attachments: [file],
+      subject: 'Backup scans',
+      body: 'Backups scans - <strong>QRSanner</strong>',
+      isHtml: true,
+    };
+
+    // Send a text message using default options
+    this.emailComposer.open(email);
   }
 }
